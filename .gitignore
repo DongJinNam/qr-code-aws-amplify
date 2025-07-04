@@ -1,6 +1,8 @@
 # node_modules: 패키지 의존성 폴더
 node_modules/
 
+package-lock.json
+
 # 환경 변수 파일
 .env
 
