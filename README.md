@@ -11,5 +11,16 @@ qr code 인증 프로젝트(aws amplify 활용)
 
 ### 개발 요구사항
 
+- npm
 - node
 - react
+
+
+### 개발 환경 설정
+
+```sh
+npm install react-qr-reader
+npx create-react-app my-app
+cd my-app
+npm start
+```
