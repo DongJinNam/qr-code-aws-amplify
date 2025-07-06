@@ -25,4 +25,3 @@ cd my-app
 npm start
 ```
 
-test
