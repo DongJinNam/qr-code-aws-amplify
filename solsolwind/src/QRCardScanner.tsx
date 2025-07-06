@@ -115,12 +115,12 @@ const QRCardScanner: React.FC = () => {
   }
 
   // 완료 상태 저장 함수
-  const saveCompletionStatus = (cardId, status) => {
+  const saveCompletionStatus = (cardId: number, status: boolean) => {
       localStorage.setItem(`completionStatus_${cardId}`, JSON.stringify(status));
   }
 
   // 완료 상태 가져오기 함수
-  const getCompletionStatus = (cardId) => {
+  const getCompletionStatus = (cardId: number) => {
       const status = localStorage.getItem(`completionStatus_${cardId}`);
       return status ? JSON.parse(status) : false;
   }
