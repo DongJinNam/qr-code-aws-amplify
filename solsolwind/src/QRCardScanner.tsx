@@ -24,7 +24,7 @@ const QRCardScanner: React.FC = () => {
     {
       id: 1,
       title: '상품 스캔',
-      description: '상품 QR 코드를 스캔하여 정보를 확인하세요',
+      description: 'QR 코드를 스캔하여 정보를 확인하세요',
       icon: <Package className="w-10 h-10" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-600'
@@ -32,7 +32,7 @@ const QRCardScanner: React.FC = () => {
     {
       id: 2,
       title: '고객 정보',
-      description: '고객 QR 코드를 스캔하여 프로필을 확인하세요',
+      description: 'QR 코드를 스캔하여 프로필을 확인하세요',
       icon: <User className="w-10 h-10" />,
       color: 'text-green-600',
       bgColor: 'bg-green-600'
@@ -40,7 +40,7 @@ const QRCardScanner: React.FC = () => {
     {
       id: 3,
       title: '매장 정보',
-      description: '매장 QR 코드를 스캔하여 위치를 확인하세요',
+      description: 'QR 코드를 스캔하여 위치를 확인하세요',
       icon: <Building2 className="w-10 h-10" />,
       color: 'text-orange-600',
       bgColor: 'bg-orange-600'
@@ -97,7 +97,50 @@ const QRCardScanner: React.FC = () => {
     setShowResult(true);
     setIsScanning(false);
     stopCamera();
+
+    if (selectedCard) {
+      saveCompletionStatus(selectedCard.id, true);
+      setCompletionStatus(prev => ({
+        ...prev,
+        [selectedCard.id]: true
+      }));
+    }
   };
+
+  const [completionStatus, setCompletionStatus] = useState<{ [key: number]: boolean }>({});
+  const [showMessage, setShowMessage] = useState(false);
+
+  // 완료 상태 저장 함수
+  const saveCompletionStatus = (cardId, status) => {
+      localStorage.setItem(`completionStatus_${cardId}`, JSON.stringify(status));
+  }
+
+  // 완료 상태 가져오기 함수
+  const getCompletionStatus = (cardId) => {
+      const status = localStorage.getItem(`completionStatus_${cardId}`);
+      return status ? JSON.parse(status) : false;
+  }
+
+  const areAllCardsCompleted = (status: { [key: number]: boolean }) => {
+    return Object.values(status).every(value => value === true);
+  };
+
+  useEffect(() => {
+    if (areAllCardsCompleted(completionStatus) && Object.keys(completionStatus).length === cardData.length) {
+      setShowMessage(true);
+    } else {
+      setShowMessage(false);
+    }
+  }, [completionStatus, cardData.length]);
+
+  useEffect(() => {
+    const status: { [key: number]: boolean } = {};
+    cardData.forEach(card => {
+      status[card.id] = getCompletionStatus(card.id);
+    });
+    setCompletionStatus(status);
+  }, []);
+
 
   useEffect(() => {
     if (isScanning) {
@@ -131,9 +174,10 @@ const QRCardScanner: React.FC = () => {
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-          QR 코드 스캐너
+          솔솔바람 보물찾기
         </h1>
-        
+        {/** todo 이미지 로딩 확인 */}
+        {/* <img style="display: block;-webkit-user-select: none;margin: auto;cursor: zoom-in;background-color: hsl(0, 0%, 90%);" src="https://drive.google.com/u/0/drive-viewer/AKGpihbeGvbS39d9RZplGcVrVyAp_5A-Ur5C1TGTACp1T5yc4iTKZFXu_TK8JvHrQUezHnO8PDPaMwdN9zzVElBUJwLAAaQUvIyMAw=s1600-rw-v1" width="932" height="932" /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cardData.map((card) => (
             <div
@@ -155,10 +199,26 @@ const QRCardScanner: React.FC = () => {
                   <QrCode className="w-5 h-5" />
                   <span>스캔 시작</span>
                 </button>
+
+                {completionStatus[card.id] && (
+                  <div className="mt-4 flex items-center justify-center text-green-600 font-bold">
+                    <CheckCircle className="w-5 h-5 mr-1" />
+                    완료
+                  </div>
+                )}
               </div>
             </div>
           ))}
         </div>
+
+        {/* 상품 수령 메시지 */}
+        {showMessage && (
+          <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
+            상품 수령을 진행해주세요
+          </div>
+        )}
+
+        {/* todo: 상품 수령 담당자 확인 modal*/}
 
         {/* QR 스캔 모달 */}
         {isScanning && (
