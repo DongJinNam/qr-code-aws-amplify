@@ -110,6 +110,10 @@ const QRCardScanner: React.FC = () => {
   const [completionStatus, setCompletionStatus] = useState<{ [key: number]: boolean }>({});
   const [showMessage, setShowMessage] = useState(false);
 
+  const clear = () => {
+    localStorage.clear();
+  }
+
   // 완료 상태 저장 함수
   const saveCompletionStatus = (cardId, status) => {
       localStorage.setItem(`completionStatus_${cardId}`, JSON.stringify(status));
@@ -217,6 +221,10 @@ const QRCardScanner: React.FC = () => {
             상품 수령을 진행해주세요
           </div>
         )}
+
+        <button onClick={clear} className={`bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
+          초기화
+        </button>
 
         {/* todo: 상품 수령 담당자 확인 modal*/}
 
