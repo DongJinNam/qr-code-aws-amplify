@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, X, QrCode, CheckCircle, AlertCircle, Gem } from 'lucide-react';
+import jsQR from "jsqr";
 import solsolLive from './assets/solsol_live.gif';
 import solsolComplete from './assets/solsol_complete.png';
 
@@ -64,10 +65,13 @@ const QRCardScanner: React.FC = () => {
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        streamRef.current = stream;
+        videoRef.current.play();
+        requestAnimationFrame(scanQRCode);
       }
     } catch (err) {
       setError('카메라에 접근할 수 없습니다. 카메라 권한을 확인해주세요.');
+      setIsScanning(false);
+      handleClose();
     }
   };
 
@@ -79,6 +83,44 @@ const QRCardScanner: React.FC = () => {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
+  };
+
+  const scanQRCode = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // 비디오가 준비되지 않았으면 다음 프레임으로 넘어감
+    if (video.videoWidth === 0 || video.videoHeight === 0) {
+      requestAnimationFrame(scanQRCode);
+      return;
+    }
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const centerSize = Math.min(canvas.width, canvas.height) * 0.5;
+    const centerX = canvas.width / 2 - centerSize / 2;
+    const centerY = canvas.height / 2 - centerSize / 2;
+    const centerImageData = ctx.getImageData(centerX, centerY, centerSize, centerSize);
+
+    const code = jsQR(centerImageData.data, centerSize, centerSize);
+    if (code) {
+      handleQRCodeResult(code.data);
+      setIsScanning(false);
+      stopCamera();
+    } else {
+      requestAnimationFrame(scanQRCode);
+    }
+  };
+
+    // QR 코드 결과 처리: 이미지 URL이면 이동
+  const handleQRCodeResult = (data) => {
+    // 간단한 이미지 URL 판별 (jpg, png, gif 등)
+    window.location.href = data;
   };
 
   const handleClose = () => {
@@ -151,7 +193,10 @@ const QRCardScanner: React.FC = () => {
     }
     if (third) {
       localStorage.setItem('completionStatus_3', third);
-    }
+    }  
+    const url = new URL(window.location.href);
+    url.search = ""; // 파라미터 제거
+    window.history.replaceState({}, document.title, url.toString());
   }, []);
 
   useEffect(() => {
