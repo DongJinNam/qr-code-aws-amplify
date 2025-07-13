@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, X, QrCode, CheckCircle, AlertCircle, Gem } from 'lucide-react';
 import solsolLive from './assets/solsol_live.gif';
+import solsolComplete from './assets/solsol_complete.png';
 
 interface CardData {
   id: number;
@@ -186,6 +187,8 @@ const QRCardScanner: React.FC = () => {
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
           솔솔바람 보물찾기
         </h1>
+        {/* 상품 수령 전 */}
+        {!showMessage && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cardData.map((card) => (
             <div
@@ -208,7 +211,6 @@ const QRCardScanner: React.FC = () => {
                 )}
                 {completionStatus[card.id] && (
                   <div className="mt-4 flex items-center justify-center">
-                    {/* <img className="w-64 h-64" src="https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_live.gif?alt=media&token=652788ca-4f0e-47cf-ad56-252ad69fba2a" /> */}
                     <img className="w-64 h-64" src={solsolLive} />
                   </div>
                 )}
@@ -216,11 +218,17 @@ const QRCardScanner: React.FC = () => {
             </div>
           ))}
         </div>
+        )}
 
         {/* 상품 수령 메시지 */}
         {showMessage && (
-          <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
-            상품 수령을 진행해주세요
+          <div>
+            <div className="mt-4 flex items-center justify-center">
+              <img className="w-128 h-128" src={solsolComplete} />
+            </div>
+            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
+              상품 수령을 진행해주세요
+            </div>            
           </div>
         )}
 
