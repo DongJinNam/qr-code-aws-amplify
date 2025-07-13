@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, X, QrCode, Package, User, Building2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Camera, X, QrCode, Package, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface CardData {
   id: number;
