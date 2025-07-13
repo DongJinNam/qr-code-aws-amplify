@@ -23,27 +23,27 @@ const QRCardScanner: React.FC = () => {
   const cardData: CardData[] = [
     {
       id: 1,
-      title: '상품 스캔',
-      description: 'QR 코드를 스캔하여 정보를 확인하세요',
+      title: '보물 1',
+      description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Package className="w-10 h-10" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-600'
     },
     {
       id: 2,
-      title: '고객 정보',
-      description: 'QR 코드를 스캔하여 프로필을 확인하세요',
-      icon: <User className="w-10 h-10" />,
-      color: 'text-green-600',
-      bgColor: 'bg-green-600'
+      title: '보물 2',
+      description: 'QR 코드를 스캔하여 보물을 확인하세요',
+      icon: <Package className="w-10 h-10" />,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-600'
     },
     {
       id: 3,
-      title: '매장 정보',
-      description: 'QR 코드를 스캔하여 위치를 확인하세요',
-      icon: <Building2 className="w-10 h-10" />,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-600'
+      title: '보물 3',
+      description: 'QR 코드를 스캔하여 보물을 확인하세요',
+      icon: <Package className="w-10 h-10" />,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-600'
     }
   ];
 
