@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, X, QrCode, Package, CheckCircle, AlertCircle } from 'lucide-react';
+import { Camera, X, QrCode, Package, CheckCircle, AlertCircle, Gem } from 'lucide-react';
 
 interface CardData {
   id: number;
@@ -25,7 +25,7 @@ const QRCardScanner: React.FC = () => {
       id: 1,
       title: '보물 1',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
-      icon: <Package className="w-10 h-10" />,
+      icon: <Gem className="w-10 h-10" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-600'
     },
@@ -33,7 +33,7 @@ const QRCardScanner: React.FC = () => {
       id: 2,
       title: '보물 2',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
-      icon: <Package className="w-10 h-10" />,
+      icon: <Gem className="w-10 h-10" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-600'
     },
@@ -41,7 +41,7 @@ const QRCardScanner: React.FC = () => {
       id: 3,
       title: '보물 3',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
-      icon: <Package className="w-10 h-10" />,
+      icon: <Gem className="w-10 h-10" />,
       color: 'text-blue-600',
       bgColor: 'bg-blue-600'
     }
@@ -199,9 +199,6 @@ const QRCardScanner: React.FC = () => {
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
                   {card.title}
                 </h2>
-                <p className="text-gray-600 mb-4">
-                  {completionStatus[card.id] ? "확인 완료" : card.description}
-                </p>
                 {!completionStatus[card.id] && (
                   <button className={`${card.bgColor} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
                     <QrCode className="w-5 h-5" />
@@ -210,7 +207,7 @@ const QRCardScanner: React.FC = () => {
                 )}
                 {completionStatus[card.id] && (
                   <div className="mt-4 flex items-center justify-center">
-                    <img className="w-64 h-64" src="https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_complete.png?alt=media&token=7a7d3b2b-fc12-4ac9-ae66-f6da20775724" />
+                    <img className="w-64 h-64" src="https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_live.gif?alt=media&token=652788ca-4f0e-47cf-ad56-252ad69fba2a" />
                   </div>
                 )}
               </div>
@@ -225,9 +222,11 @@ const QRCardScanner: React.FC = () => {
           </div>
         )}
 
-        <button onClick={clear} className={`bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
-          초기화
-        </button>
+        <div className="p-6 text-center">
+          <button onClick={clear} className={`bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
+            초기화
+          </button>
+        </div>
 
         {/* todo: 상품 수령 담당자 확인 modal*/}
 
