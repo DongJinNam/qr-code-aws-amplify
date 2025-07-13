@@ -14,14 +14,20 @@ qr code 인증 프로젝트(aws amplify 활용)
 - npm
 - node
 - react
+- firebase
 
 
 ### 개발 환경 설정
 
 ```sh
-npm install react-qr-reader
-npx create-react-app my-app-ts --template typescript
-cd my-app
-npm start
+cd ./solsolwind
+npm run dev
+```
+
+### deploy
+
+```sh
+cd ./solsolwind
+npm run build
 ```
 
