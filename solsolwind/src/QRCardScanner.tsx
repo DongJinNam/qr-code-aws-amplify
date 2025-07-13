@@ -36,16 +36,16 @@ const QRCardScanner: React.FC = () => {
       title: '보물 2',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-600'
+      color: 'text-green-600',
+      bgColor: 'bg-green-600'
     },
     {
       id: 3,
       title: '보물 3',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-600'
+      color: 'text-red-600',
+      bgColor: 'bg-red-600'
     }
   ];
 
@@ -305,7 +305,7 @@ const QRCardScanner: React.FC = () => {
               <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
               <div>
                 <p className="font-semibold">스캔 완료!</p>
-                <p className="text-sm break-all">데이터: {scannedData}</p>
+                <p className="text-sm break-all">{scannedData}</p>
               </div>
             </div>
           </div>
