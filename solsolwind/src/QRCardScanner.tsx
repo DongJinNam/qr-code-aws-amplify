@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, X, QrCode, Package, CheckCircle, AlertCircle, Gem } from 'lucide-react';
+import { Camera, X, QrCode, CheckCircle, AlertCircle, Gem } from 'lucide-react';
+import solsolLive from './assets/solsol_live.gif';
 
 interface CardData {
   id: number;
@@ -207,7 +208,8 @@ const QRCardScanner: React.FC = () => {
                 )}
                 {completionStatus[card.id] && (
                   <div className="mt-4 flex items-center justify-center">
-                    <img className="w-64 h-64" src="https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_live.gif?alt=media&token=652788ca-4f0e-47cf-ad56-252ad69fba2a" />
+                    {/* <img className="w-64 h-64" src="https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_live.gif?alt=media&token=652788ca-4f0e-47cf-ad56-252ad69fba2a" /> */}
+                    <img className="w-64 h-64" src={solsolLive} />
                   </div>
                 )}
               </div>

@@ -30,7 +30,8 @@ body {
   min-height: 100vh;
 
   background-size: cover;
-  background-image: url('https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_background.png?alt=media&token=6e155d26-ab3a-4929-a5ca-e1a4424c0bbd');
+  /* background-image: url('https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_background.png?alt=media&token=6e155d26-ab3a-4929-a5ca-e1a4424c0bbd'); */
+  background-image: url('/assets/solsol_background.png');
 }
 
 h1 {
