@@ -25,7 +25,7 @@ const QRCardScanner: React.FC = () => {
   const cardData: CardData[] = [
     {
       id: 1,
-      title: '보물 1',
+      title: '보물 장소 1',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
       color: 'text-blue-600',
@@ -33,7 +33,7 @@ const QRCardScanner: React.FC = () => {
     },
     {
       id: 2,
-      title: '보물 2',
+      title: '보물 장소 2',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
       color: 'text-green-600',
@@ -41,7 +41,7 @@ const QRCardScanner: React.FC = () => {
     },
     {
       id: 3,
-      title: '보물 3',
+      title: '보물 장소 3',
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
       color: 'text-red-600',
@@ -89,9 +89,9 @@ const QRCardScanner: React.FC = () => {
 
   const simulateQRScan = () => {
     const mockData = {
-      1: '보물 1',
-      2: '보물 2',
-      3: '보물 3'
+      1: '보물 장소 1',
+      2: '보물 장소 2',
+      3: '보물 장소 3'
     };
     
     const data = mockData[selectedCard?.id as keyof typeof mockData] || 'QR_CODE_DATA';
@@ -118,7 +118,7 @@ const QRCardScanner: React.FC = () => {
       status[card.id] = false;
     });
     setCompletionStatus(status);
-    
+    localStorage.clear();
   }
 
   // 완료 상태 저장 함수
