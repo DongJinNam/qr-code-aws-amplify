@@ -118,7 +118,7 @@ const QRCardScanner: React.FC = () => {
   };
 
     // QR 코드 결과 처리: 이미지 URL이면 이동
-  const handleQRCodeResult = (data) => {
+  const handleQRCodeResult = (data: string) => {
     // 간단한 이미지 URL 판별 (jpg, png, gif 등)
     window.location.href = data;
   };
