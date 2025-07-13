@@ -87,9 +87,9 @@ const QRCardScanner: React.FC = () => {
 
   const simulateQRScan = () => {
     const mockData = {
-      1: 'PRODUCT_12345_상품명_가격_10000원',
-      2: 'CUSTOMER_98765_홍길동_VIP회원',
-      3: 'STORE_ABCDE_강남점_서울시_강남구'
+      1: '보물 1',
+      2: '보물 2',
+      3: '보물 3'
     };
     
     const data = mockData[selectedCard?.id as keyof typeof mockData] || 'QR_CODE_DATA';
@@ -111,7 +111,12 @@ const QRCardScanner: React.FC = () => {
   const [showMessage, setShowMessage] = useState(false);
 
   const clear = () => {
-    localStorage.clear();
+    const status: { [key: number]: boolean } = {};
+    cardData.forEach(card => {
+      status[card.id] = false;
+    });
+    setCompletionStatus(status);
+    
   }
 
   // 완료 상태 저장 함수
@@ -175,13 +180,11 @@ const QRCardScanner: React.FC = () => {
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
           솔솔바람 보물찾기
         </h1>
-        {/** todo 이미지 로딩 확인 */}
-        {/* <img style="display: block;-webkit-user-select: none;margin: auto;cursor: zoom-in;background-color: hsl(0, 0%, 90%);" src="https://drive.google.com/u/0/drive-viewer/AKGpihbeGvbS39d9RZplGcVrVyAp_5A-Ur5C1TGTACp1T5yc4iTKZFXu_TK8JvHrQUezHnO8PDPaMwdN9zzVElBUJwLAAaQUvIyMAw=s1600-rw-v1" width="932" height="932" /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cardData.map((card) => (
             <div
@@ -197,17 +200,17 @@ const QRCardScanner: React.FC = () => {
                   {card.title}
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  {card.description}
+                  {completionStatus[card.id] ? "확인 완료" : card.description}
                 </p>
-                <button className={`${card.bgColor} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
-                  <QrCode className="w-5 h-5" />
-                  <span>스캔 시작</span>
-                </button>
-
+                {!completionStatus[card.id] && (
+                  <button className={`${card.bgColor} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
+                    <QrCode className="w-5 h-5" />
+                    <span>스캔 시작</span>
+                  </button>
+                )}
                 {completionStatus[card.id] && (
-                  <div className="mt-4 flex items-center justify-center text-green-600 font-bold">
-                    <CheckCircle className="w-5 h-5 mr-1" />
-                    완료
+                  <div className="mt-4 flex items-center justify-center">
+                    <img className="w-64 h-64" src="https://firebasestorage.googleapis.com/v0/b/qr-code-recognitor.firebasestorage.app/o/solsol_complete.png?alt=media&token=7a7d3b2b-fc12-4ac9-ae66-f6da20775724" />
                   </div>
                 )}
               </div>
