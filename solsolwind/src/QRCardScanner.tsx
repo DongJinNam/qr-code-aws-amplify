@@ -118,6 +118,7 @@ const QRCardScanner: React.FC = () => {
       status[card.id] = false;
     });
     setCompletionStatus(status);
+    //todo: 실제 배포때는 초기화 기능이 없도록
     localStorage.clear();
   }
 
@@ -135,6 +136,23 @@ const QRCardScanner: React.FC = () => {
   const areAllCardsCompleted = (status: { [key: number]: boolean }) => {
     return Object.values(status).every(value => value === true);
   };
+
+  //todo: refactor
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const first = params.get('first');
+    const second = params.get('second');
+    const third = params.get('third');
+    if (first) {
+      localStorage.setItem('completionStatus_1', first);
+    }
+    if (second) {
+      localStorage.setItem('completionStatus_2', second);
+    }
+    if (third) {
+      localStorage.setItem('completionStatus_3', third);
+    }
+  }, []);
 
   useEffect(() => {
     if (areAllCardsCompleted(completionStatus) && Object.keys(completionStatus).length === cardData.length) {
