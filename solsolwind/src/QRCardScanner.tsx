@@ -334,11 +334,6 @@ const QRCardScanner: React.FC = () => {
           <p className="text-gray-600 mb-6">
             솔솔바람 보물찾기 이벤트에 참여해주셔서 감사합니다.
           </p>
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <p className="text-sm text-blue-800">
-              상품을 잘 받으셨기를 바랍니다! 🎉
-            </p>
-          </div>
           {/* dev 용 기능 */}
           <div className="p-6 text-center">
             <button onClick={clearAll} className={`bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
