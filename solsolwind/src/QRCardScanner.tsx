@@ -25,6 +25,8 @@ const QRCardScanner: React.FC = () => {
   const [showRewardComplete, setShowRewardComplete] = useState(false);
   const [completionStatus, setCompletionStatus] = useState<{ [key: number]: boolean }>({});
   const [showMessage, setShowMessage] = useState(false);
+  const [showToastMessage, setShowToastMessage] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -193,7 +195,7 @@ const QRCardScanner: React.FC = () => {
     return status ? JSON.parse(status) : false;
   }
 
-    // 상품 수령 상태 저장
+  // 상품 수령 상태 저장
   const saveRewardStatus = (status: boolean) => {
     localStorage.setItem(`rewardStatus`, JSON.stringify(status));
   };
@@ -217,6 +219,26 @@ const QRCardScanner: React.FC = () => {
     
     // 3초 후 페이지 새로고침
     setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  };
+
+  // 개발환경 전용 초기화 함수
+  const clearAll = () => {
+    
+    const status: { [key: number]: boolean } = {};
+    cardData.forEach(card => {
+      status[card.id] = false;      
+    });
+    setCompletionStatus(status);
+    localStorage.clear();
+
+    setShowToastMessage(true);
+    setToastMessage('3초 후 초기 화면으로 이동합니다.');
+
+    // 3초 후 페이지 새로고침
+    setTimeout(() => {
+      setShowToastMessage(false);
       window.location.reload();
     }, 3000);
   };
@@ -317,6 +339,17 @@ const QRCardScanner: React.FC = () => {
               상품을 잘 받으셨기를 바랍니다! 🎉
             </p>
           </div>
+          {/* dev 용 기능 */}
+          <div className="p-6 text-center">
+            <button onClick={clearAll} className={`bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
+              초기화
+            </button>
+          </div>          
+          {showToastMessage && (
+            <div className="fixed text-center whitespace-nowrap bottom-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
+              {toastMessage}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -385,6 +418,12 @@ const QRCardScanner: React.FC = () => {
                 <span>담당자 확인</span>
               </button>
             </div>
+          </div>
+        )}
+
+        {showToastMessage && (
+          <div className="fixed text-center whitespace-nowrap bottom-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
+            {toastMessage}
           </div>
         )}
 
@@ -471,11 +510,12 @@ const QRCardScanner: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm text-center">
+                  <div className="whitespace-nowrap absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm text-center">
                     QR 코드를 화면 중앙에 맞춰주세요
                   </div>
                 </div>
-                
+
+                {/* 시뮬레이션 필요 시에만 사용 */}                
                 <div className="p-4 flex justify-center">
                   <button
                     onClick={simulateQRScan}
@@ -516,7 +556,7 @@ const QRCardScanner: React.FC = () => {
               </p>
             </div>
           </div>
-        )}        
+        )}
 
         {/* 에러 토스트 */}
         {error && (
