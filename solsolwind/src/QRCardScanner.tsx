@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, X, QrCode, CheckCircle, AlertCircle, Gem } from 'lucide-react';
+import { Camera, X, QrCode, CheckCircle, AlertCircle, Gem, UserCheck } from 'lucide-react';
 import jsQR from "jsqr";
 import solsolLive from './assets/solsol_live.gif';
 import solsolComplete from './assets/solsol_complete.png';
@@ -11,6 +11,7 @@ interface CardData {
   icon: React.ReactNode;
   color: string;
   bgColor: string;
+  expectedUrl: string;
 }
 
 const QRCardScanner: React.FC = () => {
@@ -19,6 +20,11 @@ const QRCardScanner: React.FC = () => {
   const [scannedData, setScannedData] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [showResult, setShowResult] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const [isRewardReceived, setIsRewardReceived] = useState(false);
+  const [showRewardComplete, setShowRewardComplete] = useState(false);
+  const [completionStatus, setCompletionStatus] = useState<{ [key: number]: boolean }>({});
+  const [showMessage, setShowMessage] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -30,7 +36,8 @@ const QRCardScanner: React.FC = () => {
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
       color: 'text-blue-600',
-      bgColor: 'bg-blue-600'
+      bgColor: 'bg-blue-600',
+      expectedUrl: 'https://m.site.naver.com/1MuFR'
     },
     {
       id: 2,
@@ -38,7 +45,8 @@ const QRCardScanner: React.FC = () => {
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
       color: 'text-green-600',
-      bgColor: 'bg-green-600'
+      bgColor: 'bg-green-600',
+      expectedUrl: 'https://m.site.naver.com/1MuG7'
     },
     {
       id: 3,
@@ -46,7 +54,8 @@ const QRCardScanner: React.FC = () => {
       description: 'QR 코드를 스캔하여 보물을 확인하세요',
       icon: <Gem className="w-10 h-10" />,
       color: 'text-red-600',
-      bgColor: 'bg-red-600'
+      bgColor: 'bg-red-600',
+      expectedUrl: 'https://m.site.naver.com/1MuGe'
     }
   ];
 
@@ -119,8 +128,30 @@ const QRCardScanner: React.FC = () => {
 
     // QR 코드 결과 처리: 이미지 URL이면 이동
   const handleQRCodeResult = (data: string) => {
-    // 간단한 이미지 URL 판별 (jpg, png, gif 등)
-    window.location.href = data;
+    // // 간단한 이미지 URL 판별 (jpg, png, gif 등)
+    // window.location.href = data;
+    if (!selectedCard) return;
+
+    // URL 검증
+    if (data !== selectedCard.expectedUrl) {
+      setError('올바르지 않은 QR 코드입니다. 해당 보물 장소의 QR 코드를 스캔해주세요.');
+      setIsScanning(false);
+      stopCamera();
+      return;
+    }
+
+    // 올바른 URL인 경우 처리
+    setScannedData(selectedCard.title);
+    setShowResult(true);
+    setIsScanning(false);
+    stopCamera();
+
+    // 완료 상태 저장
+    saveCompletionStatus(selectedCard.id, true);
+    setCompletionStatus(prev => ({
+      ...prev,
+      [selectedCard.id]: true
+    }));
   };
 
   const handleClose = () => {
@@ -151,19 +182,6 @@ const QRCardScanner: React.FC = () => {
     }
   };
 
-  const [completionStatus, setCompletionStatus] = useState<{ [key: number]: boolean }>({});
-  const [showMessage, setShowMessage] = useState(false);
-
-  const clear = () => {
-    const status: { [key: number]: boolean } = {};
-    cardData.forEach(card => {
-      status[card.id] = false;
-    });
-    setCompletionStatus(status);
-    //todo: 실제 배포때는 초기화 기능이 없도록
-    localStorage.clear();
-  }
-
   // 완료 상태 저장 함수
   const saveCompletionStatus = (cardId: number, status: boolean) => {
       localStorage.setItem(`completionStatus_${cardId}`, JSON.stringify(status));
@@ -171,12 +189,36 @@ const QRCardScanner: React.FC = () => {
 
   // 완료 상태 가져오기 함수
   const getCompletionStatus = (cardId: number) => {
-      const status = localStorage.getItem(`completionStatus_${cardId}`);
-      return status ? JSON.parse(status) : false;
+    const status = localStorage.getItem(`completionStatus_${cardId}`);
+    return status ? JSON.parse(status) : false;
   }
+
+    // 상품 수령 상태 저장
+  const saveRewardStatus = (status: boolean) => {
+    localStorage.setItem(`rewardStatus`, JSON.stringify(status));
+  };
+
+  // 상품 수령 상태 가져오기
+  const getRewardStatus = () => {
+    const status = localStorage.getItem(`rewardStatus`);
+    return status ? JSON.parse(status) : false;
+  };
 
   const areAllCardsCompleted = (status: { [key: number]: boolean }) => {
     return Object.values(status).every(value => value === true);
+  };
+
+    // 담당자 승인 처리
+  const handleAdminApproval = () => {
+    setShowAdminModal(false);
+    setIsRewardReceived(true);
+    saveRewardStatus(true);
+    setShowRewardComplete(true);
+    
+    // 3초 후 페이지 새로고침
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
   };
 
   //todo: refactor
@@ -200,7 +242,10 @@ const QRCardScanner: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (areAllCardsCompleted(completionStatus) && Object.keys(completionStatus).length === cardData.length) {
+    if (getRewardStatus()) {
+      setIsRewardReceived(true);
+      setShowMessage(false);
+    } else if (areAllCardsCompleted(completionStatus) && Object.keys(completionStatus).length === cardData.length) {
       setShowMessage(true);
     } else {
       setShowMessage(false);
@@ -243,6 +288,39 @@ const QRCardScanner: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [error]);
+
+    useEffect(() => {
+    if (showRewardComplete) {
+      const timer = setTimeout(() => {
+        setShowRewardComplete(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showRewardComplete]);
+
+  // 상품 수령 완료된 경우 화면
+  if (isRewardReceived) {
+    return (
+      <div className="min-h-screen p-6 flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center">
+          <div className="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-12 h-12 text-green-600" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            상품 수령 완료!
+          </h1>
+          <p className="text-gray-600 mb-6">
+            솔솔바람 보물찾기 이벤트에 참여해주셔서 감사합니다.
+          </p>
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <p className="text-sm text-blue-800">
+              상품을 잘 받으셨기를 바랍니다! 🎉
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6">
@@ -289,21 +367,70 @@ const QRCardScanner: React.FC = () => {
             <div className="mt-4 flex items-center justify-center">
               <img className="w-64 h-64" src={solsolLive} />
             </div>
-            <div className="fixed text-center top-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
+            <div className="fixed text-center whitespace-nowrap bottom-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
               미션 클리어!
               <br/>
+              담당자 확인을 통해
+              <br />
               상품 수령을 진행해주세요
-            </div>            
+            </div>
+            
+            {/* 담당자 확인 버튼 */}
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => setShowAdminModal(true)}
+                className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-lg font-semibold"
+              >
+                <UserCheck className="w-6 h-6" />
+                <span>담당자 확인</span>
+              </button>
+            </div>
           </div>
         )}
 
-        <div className="p-6 text-center">
-          <button onClick={clear} className={`bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2`}>
-            초기화
-          </button>
-        </div>
-
-        {/* todo: 상품 수령 담당자 확인 modal*/}
+        {/* 담당자 확인 모달 */}
+        {showAdminModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+              <div className="bg-green-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+                <h3 className="text-lg font-semibold">담당자 확인</h3>
+                <button
+                  onClick={() => setShowAdminModal(false)}
+                  className="text-white hover:text-gray-200"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                <div className="text-center mb-6">
+                  <UserCheck className="w-16 h-16 text-green-600 mx-auto mb-4" />
+                  <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                    상품 수령 확인
+                  </h4>
+                  <p className="text-gray-600 whitespace-nowrap">
+                    담당자가 상품을 전달했는지 확인해주세요.
+                  </p>
+                </div>
+                
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setShowAdminModal(false)}
+                    className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  >
+                    취소
+                  </button>
+                  <button
+                    onClick={handleAdminApproval}
+                    className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    승인 완료
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* QR 스캔 모달 */}
         {isScanning && (
@@ -375,6 +502,21 @@ const QRCardScanner: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* 상품 수령 완료 토스트 */}
+        {showRewardComplete && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4 text-center">
+              <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                상품 수령이 완료되었습니다!
+              </h3>
+              <p className="text-gray-600">
+                잠시 후 페이지가 새로고침됩니다.
+              </p>
+            </div>
+          </div>
+        )}        
 
         {/* 에러 토스트 */}
         {error && (
