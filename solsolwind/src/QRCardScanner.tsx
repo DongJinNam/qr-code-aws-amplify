@@ -160,27 +160,28 @@ const QRCardScanner: React.FC = () => {
     stopCamera();
   };
 
-  const simulateQRScan = () => {
-    const mockData = {
-      1: '보물 장소 1',
-      2: '보물 장소 2',
-      3: '보물 장소 3'
-    };
+  {/* 아래는 테스트할 때만 사용 */}
+  // const simulateQRScan = () => {
+  //   const mockData = {
+  //     1: '보물 장소 1',
+  //     2: '보물 장소 2',
+  //     3: '보물 장소 3'
+  //   };
     
-    const data = mockData[selectedCard?.id as keyof typeof mockData] || 'QR_CODE_DATA';
-    setScannedData(data);
-    setShowResult(true);
-    setIsScanning(false);
-    stopCamera();
+  //   const data = mockData[selectedCard?.id as keyof typeof mockData] || 'QR_CODE_DATA';
+  //   setScannedData(data);
+  //   setShowResult(true);
+  //   setIsScanning(false);
+  //   stopCamera();
 
-    if (selectedCard) {
-      saveCompletionStatus(selectedCard.id, true);
-      setCompletionStatus(prev => ({
-        ...prev,
-        [selectedCard.id]: true
-      }));
-    }
-  };
+  //   if (selectedCard) {
+  //     saveCompletionStatus(selectedCard.id, true);
+  //     setCompletionStatus(prev => ({
+  //       ...prev,
+  //       [selectedCard.id]: true
+  //     }));
+  //   }
+  // };
 
   // 완료 상태 저장 함수
   const saveCompletionStatus = (cardId: number, status: boolean) => {
