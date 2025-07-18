@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, X, QrCode, CheckCircle, AlertCircle, Gem, UserCheck } from 'lucide-react';
+import { X, QrCode, CheckCircle, AlertCircle, Gem, UserCheck } from 'lucide-react';
 import jsQR from "jsqr";
 import solsolLive from './assets/solsol_live.gif';
 import solsolComplete from './assets/solsol_complete.png';
