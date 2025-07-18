@@ -130,8 +130,6 @@ const QRCardScanner: React.FC = () => {
 
     // QR 코드 결과 처리: 이미지 URL이면 이동
   const handleQRCodeResult = (data: string) => {
-    // // 간단한 이미지 URL 판별 (jpg, png, gif 등)
-    // window.location.href = data;
     if (!selectedCard) return;
 
     // URL 검증
@@ -517,7 +515,7 @@ const QRCardScanner: React.FC = () => {
                 </div>
 
                 {/* 시뮬레이션 필요 시에만 사용 */}                
-                <div className="p-4 flex justify-center">
+                {/* <div className="p-4 flex justify-center">
                   <button
                     onClick={simulateQRScan}
                     className={`${selectedCard?.bgColor} text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center space-x-2`}
@@ -525,7 +523,7 @@ const QRCardScanner: React.FC = () => {
                     <Camera className="w-5 h-5" />
                     <span>스캔 시뮬레이션</span>
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
