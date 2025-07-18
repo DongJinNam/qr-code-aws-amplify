@@ -231,6 +231,7 @@ const QRCardScanner: React.FC = () => {
       status[card.id] = false;      
     });
     setCompletionStatus(status);
+    //todo: 상품 수령 확인 이력은 남겨야될듯
     localStorage.clear();
 
     setShowToastMessage(true);
