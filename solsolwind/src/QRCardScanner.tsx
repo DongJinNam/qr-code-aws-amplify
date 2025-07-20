@@ -194,7 +194,7 @@ const QRCardScanner: React.FC = () => {
   if (isRewardReceived) {
     return (
       <div>
-        <CompletedScreen onClearAll={clearAll} showToastMessage={false} toastMessage={''} />
+        <CompletedScreen onClearAll={clearAll} />
         <Toast message={showToastMessage ? `${toastMessage}` : error}
                type={showToastMessage ? 'success' : 'error'}
                isVisible={showToastMessage || !!error} />

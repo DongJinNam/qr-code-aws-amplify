@@ -3,15 +3,9 @@ import { CheckCircle } from 'lucide-react';
 
 interface CompletedScreenProps {
   onClearAll: () => void;
-  showToastMessage: boolean;
-  toastMessage: string;
 }
 
-const CompletedScreen: React.FC<CompletedScreenProps> = ({ 
-  onClearAll, 
-  showToastMessage, 
-  toastMessage 
-}) => {
+const CompletedScreen: React.FC<CompletedScreenProps> = ({onClearAll}) => {
   return (
     <div className="min-h-screen p-6 flex items-center justify-center">
       <div className="max-w-md mx-auto text-center">
