@@ -1,6 +1,6 @@
 import React from 'react';
 import { Gem } from 'lucide-react';
-import { CardData } from '../types';
+import { type CardData } from '../types';
 
 export const cardData: CardData[] = [
   {
