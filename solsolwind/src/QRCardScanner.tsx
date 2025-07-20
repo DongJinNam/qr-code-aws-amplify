@@ -193,7 +193,12 @@ const QRCardScanner: React.FC = () => {
   // 상품 수령 완료된 경우 화면
   if (isRewardReceived) {
     return (
-      <CompletedScreen onClearAll={clearAll} showToastMessage={false} toastMessage={''} />
+      <div>
+        <CompletedScreen onClearAll={clearAll} showToastMessage={false} toastMessage={''} />
+        <Toast message={showToastMessage ? `${toastMessage}` : error}
+               type={showToastMessage ? 'success' : 'error'}
+               isVisible={showToastMessage || !!error} />
+      </div>
     );
   }
 

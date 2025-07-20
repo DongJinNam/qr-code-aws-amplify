@@ -32,12 +32,7 @@ const CompletedScreen: React.FC<CompletedScreenProps> = ({
           >
             초기화
           </button>
-        </div>          
-        {showToastMessage && (
-          <div className="fixed text-center whitespace-nowrap bottom-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50">
-            {toastMessage}
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
