@@ -1,6 +1,7 @@
 import React from 'react';
-import { QrCode, CheckCircle } from 'lucide-react';
+import { QrCode } from 'lucide-react';
 import { type CardGridProps } from '../types';
+import solsolComplete from '../assets/solsol_complete.png';
 
 const CardGrid: React.FC<CardGridProps> = ({ cardData, completionStatus, onCardClick }) => {
   return (
@@ -30,7 +31,7 @@ const CardGrid: React.FC<CardGridProps> = ({ cardData, completionStatus, onCardC
             {completionStatus[card.id] && (
               <div className="mt-4 flex items-center justify-center">
                 <div className="w-32 h-32 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-16 h-16 text-green-600" />
+                  <img className="w-32 h-32" src={solsolComplete} />
                 </div>
               </div>
             )}

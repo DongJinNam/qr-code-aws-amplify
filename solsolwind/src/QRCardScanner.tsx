@@ -9,6 +9,7 @@ import { StorageUtils } from './utils/StorageUtils';
 import RewardCompleteModal from './components/RewardCompleteModal';
 import AdminModal from './components/AdminModal';
 import MissionCompleteScreen from './components/MissionCompleteScreen';
+import CompletedScreen from './components/CompletedScreen';
 
 // Main Component
 const QRCardScanner: React.FC = () => {
@@ -192,7 +193,7 @@ const QRCardScanner: React.FC = () => {
   // 상품 수령 완료된 경우 화면
   if (isRewardReceived) {
     return (
-      <RewardCompleteModal isVisible={isRewardReceived} />
+      <CompletedScreen onClearAll={clearAll} showToastMessage={false} toastMessage={''} />
     );
   }
 

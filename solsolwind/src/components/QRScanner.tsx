@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { type QRScannerProps } from '../types';
+import jsQR from 'jsqr';
 
 const QRScanner: React.FC<QRScannerProps> = ({
   selectedCard,
@@ -61,6 +62,18 @@ const QRScanner: React.FC<QRScannerProps> = ({
     const centerX = canvas.width / 2 - centerSize / 2;
     const centerY = canvas.height / 2 - centerSize / 2;
     const centerImageData = ctx.getImageData(centerX, centerY, centerSize, centerSize);
+
+    const code = jsQR(centerImageData.data, centerSize, centerSize);
+    console.log(code);
+    if (!code) {
+      onScanResult(code.data);
+      // handleQRCodeResult(code.data);
+      // setIsScanning(false);
+      stopCamera();
+    } else {
+      requestAnimationFrame(scanQRCode);
+    }
+
 
     // Mock QR detection for demo (replace with actual jsQR)
     const mockDetection = Math.random() < 0.1; // 10% chance per frame
