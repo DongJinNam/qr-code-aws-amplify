@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Gem } from 'lucide-react';
 import Footer from './components/Footer';
 import CardGrid from './components/CardGrid';
 import QRScanner from './components/QRScanner';
