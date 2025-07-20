@@ -10,6 +10,7 @@ import RewardCompleteModal from './components/RewardCompleteModal';
 import AdminModal from './components/AdminModal';
 import MissionCompleteScreen from './components/MissionCompleteScreen';
 import CompletedScreen from './components/CompletedScreen';
+import { cardData } from './data/cardData';
 
 // Main Component
 const QRCardScanner: React.FC = () => {
@@ -25,36 +26,6 @@ const QRCardScanner: React.FC = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-
-  const cardData: CardData[] = [
-    {
-      id: 1,
-      title: '보물 장소 1',
-      description: 'QR 코드를 스캔하여 보물을 확인하세요',
-      icon: <Gem className="w-10 h-10" />,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-600',
-      expectedUrl: 'https://m.site.naver.com/1MuFR'
-    },
-    {
-      id: 2,
-      title: '보물 장소 2',
-      description: 'QR 코드를 스캔하여 보물을 확인하세요',
-      icon: <Gem className="w-10 h-10" />,
-      color: 'text-green-600',
-      bgColor: 'bg-green-600',
-      expectedUrl: 'https://m.site.naver.com/1MuG7'
-    },
-    {
-      id: 3,
-      title: '보물 장소 3',
-      description: 'QR 코드를 스캔하여 보물을 확인하세요',
-      icon: <Gem className="w-10 h-10" />,
-      color: 'text-red-600',
-      bgColor: 'bg-red-600',
-      expectedUrl: 'https://m.site.naver.com/1MuGe'
-    }
-  ];
 
   const handleCardClick = (card: CardData) => {
     setSelectedCard(card);
