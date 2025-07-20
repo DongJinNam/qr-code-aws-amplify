@@ -64,21 +64,8 @@ const QRScanner: React.FC<QRScannerProps> = ({
     const centerImageData = ctx.getImageData(centerX, centerY, centerSize, centerSize);
 
     const code = jsQR(centerImageData.data, centerSize, centerSize);
-    console.log(code);
-    if (!code) {
+    if (code) {
       onScanResult(code.data);
-      // handleQRCodeResult(code.data);
-      // setIsScanning(false);
-      stopCamera();
-    } else {
-      requestAnimationFrame(scanQRCode);
-    }
-
-
-    // Mock QR detection for demo (replace with actual jsQR)
-    const mockDetection = Math.random() < 0.1; // 10% chance per frame
-    if (mockDetection && selectedCard) {
-      onScanResult(selectedCard.expectedUrl);
       stopCamera();
     } else {
       requestAnimationFrame(scanQRCode);
