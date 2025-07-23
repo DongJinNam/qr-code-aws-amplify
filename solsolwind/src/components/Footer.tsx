@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
         </div>
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © 2025 솔솔바람 보물찾기. All rights reserved.
+            © 2025 솔솔바람. All rights reserved.
           </p>
         </div>
       </div>

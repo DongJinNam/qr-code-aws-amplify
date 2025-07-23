@@ -16,7 +16,7 @@ const CompletedScreen: React.FC<CompletedScreenProps> = ({onClearAll}) => {
           상품 수령 완료!
         </h1>
         <p className="text-gray-600 mb-6">
-          솔솔바람 보물찾기 이벤트에 참여해주셔서 감사합니다.
+          솔솔이를 찾아라 이벤트에 참여해주셔서 감사합니다.
         </p>
         {/* dev 용 기능 */}
         <div className="p-6 text-center">

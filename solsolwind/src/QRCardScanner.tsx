@@ -11,6 +11,7 @@ import MissionCompleteScreen from './components/MissionCompleteScreen';
 import CompletedScreen from './components/CompletedScreen';
 import { cardData } from './data/cardData';
 
+// 보물장소 -> 솔솔이
 // Main Component
 const QRCardScanner: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
@@ -177,7 +178,7 @@ const QRCardScanner: React.FC = () => {
       <div className="flex-grow p-6">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-            솔솔바람 보물찾기
+            솔솔이를 찾아라
           </h1>
           
           {/* 상품 수령 전 */}
