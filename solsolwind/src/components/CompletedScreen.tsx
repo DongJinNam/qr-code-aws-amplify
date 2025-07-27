@@ -19,14 +19,14 @@ const CompletedScreen: React.FC<CompletedScreenProps> = ({onClearAll}) => {
           솔솔이를 찾아라 이벤트에 참여해주셔서 감사합니다.
         </p>
         {/* dev 용 기능 */}
-        <div className="p-6 text-center">
+        {/* <div className="p-6 text-center">
           <button 
             onClick={onClearAll} 
             className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center mx-auto space-x-2"
           >
             초기화
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
