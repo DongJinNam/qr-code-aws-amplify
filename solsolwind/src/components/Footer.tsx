@@ -10,8 +10,14 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
             <h3 className="text-lg font-semibold mb-4">이벤트 안내</h3>
             <ul className="text-gray-300 text-sm space-y-2">
               <li>• 병동에 숨겨진 QR 코드를 스캔하여 미션을 완료하세요.</li>
-              <li>• 솔솔바람 프로그램실을 방문하면 상품을 받을 수 있습니다.</li>
             </ul>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">문의사항</h3>
+            <p className="text-gray-300 text-sm">
+              이벤트 관련 문의사항이 있으시면<br />
+              02-2258-5306 으로 연락주세요.
+            </p>
           </div>
         </div>
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
