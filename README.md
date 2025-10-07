@@ -29,5 +29,7 @@ npm run dev
 ```sh
 cd ./solsolwind
 npm run build
+firebase login
+firebase deploy
 ```
 
